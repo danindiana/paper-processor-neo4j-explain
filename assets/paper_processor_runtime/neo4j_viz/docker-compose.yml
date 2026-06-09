@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  neo4j:
+    image: neo4j:latest
+    container_name: paper-processor-neo4j
+    ports:
+      - "127.0.0.1:7474:7474" # HTTP Browser Console
+      - "127.0.0.1:7687:7687" # Bolt Protocol (queries)
+    volumes:
+      - ./data:/data
+      - ./logs:/logs
+      - ./import:/var/lib/neo4j/import
+      - ./plugins:/plugins
+    environment:
+      - NEO4J_AUTH=neo4j/password123
+      - NEO4J_dbms_security_allow__csv__import__from__file__urls=true
+    restart: always
