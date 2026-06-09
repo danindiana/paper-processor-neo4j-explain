@@ -19,6 +19,12 @@
 [![Made with Claude Code](https://img.shields.io/badge/made%20with-Claude%20Code-d97757)](https://claude.com/claude-code)
 [![Status: live](https://img.shields.io/badge/status-live-9affae)](#)
 
+<br>
+
+<img src="assets/screenshot.png" alt="Live explanation graph rendered at http://192.168.1.85:8686/explanation.html" width="900">
+
+<sub><i>The live <code>:PPExplain</code> graph served on the LAN — process, backend, model, corpus, current/done papers, the OCR stage, and the per-paper output fan-out.</i></sub>
+
 </div>
 
 ---
