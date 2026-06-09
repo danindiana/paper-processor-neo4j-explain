@@ -45,6 +45,13 @@ It was born from a real session on host `worlock` inspecting **PID 104025** — 
 [OpenClaw/Ollama paper-processing pipeline](docs/2026-06-09T071447Z_running_paper_processor_explained.md)
 that was ~48% through a 5,219-PDF corpus, mid-OCR on a 333-page math book.
 
+> **📎 Where it led:** introspecting that same process surfaced *why* it was crawling —
+> a 30B model overflowing VRAM on huge documents. That investigation produced a set of
+> "blast-radius" fixes (sized-model routing, an OCR page budget, a lighter C++ model, a
+> tighter context cap), documented with provenance and Graphviz diagrams in
+> **[`changes/2026-06-09T082314Z_blast-radius-caps`](https://github.com/danindiana/lobster-graph/tree/main/changes/2026-06-09T082314Z_blast-radius-caps)**
+> (in the `lobster-graph` repo) — the live dashboard here is what made the diagnosis legible.
+
 ---
 
 ## ✨ Features
