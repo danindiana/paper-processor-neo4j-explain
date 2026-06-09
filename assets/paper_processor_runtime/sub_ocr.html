@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Subsystem · OCR fallback</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+ html,body{margin:0;height:100%;background:#06090f;color:#cfe;font-family:ui-monospace,Menlo,monospace}
+ #hdr{padding:10px 16px;border-bottom:1px solid #163;background:#0a1018}
+ #hdr h1{margin:0;font-size:16px;color:#5fffcf;letter-spacing:.5px}
+ #hdr p{margin:4px 0 0;font-size:12px;color:#7aa}
+ #net{width:100%;height:calc(100vh - 64px)}
+</style></head><body>
+<div id="hdr"><h1>🦞 Subsystem · OCR fallback</h1><p>ocr_fallback.extract_pages_with_ocr() — local-first Tesseract for scanned/image PDFs</p></div>
+<div id="net"></div>
+<script>
+const PAL={"source": "#9affae", "probe": "#ffd45f", "pipe": "#5fffcf", "store": "#7ab8ff", "data": "#ff7ad9", "web": "#ffa45f", "client": "#ff6b6b", "backend": "#c0a0ff", "stage": "#ff6b6b", "section": "#7aa0c0", "model": "#ff7ad9", "io": "#ffd45f"};
+const N=[{"id": "page", "kind": "source", "name": "fitz page", "detail": "page.get_text()", "big": true}, {"id": "need", "kind": "io", "name": "page_needs_ocr?", "detail": "stripped < min_chars (100)"}, {"id": "avail", "kind": "io", "name": "ocr_available?", "detail": "tesseract bin + tessdata lang"}, {"id": "mode", "kind": "io", "name": "mode gate", "detail": "auto / always / never"}, {"id": "cache", "kind": "store", "name": ".ocr_cache/", "detail": "{hash}_p{idx:04d}.txt", "big": true}, {"id": "ocr", "kind": "stage", "name": "ocr_page", "detail": "get_textpage_ocr @300dpi"}, {"id": "text", "kind": "pipe", "name": "page text", "detail": "native or OCR'd"}, {"id": "stats", "kind": "data", "name": "OcrStats", "detail": "ocr_pages \u00b7 cached_pages"}];
+const E=[{"from": "page", "to": "need"}, {"from": "need", "to": "text", "label": "no \u2192 native"}, {"from": "need", "to": "avail", "label": "yes"}, {"from": "avail", "to": "mode", "label": "ok"}, {"from": "avail", "to": "text", "label": "unavailable \u2192 native", "dashes": true}, {"from": "mode", "to": "cache", "label": "allowed"}, {"from": "cache", "to": "ocr", "label": "miss"}, {"from": "cache", "to": "text", "label": "hit"}, {"from": "ocr", "to": "cache", "label": "write"}, {"from": "ocr", "to": "text"}, {"from": "text", "to": "stats"}];
+const DIR='LR';
+const nodes=new vis.DataSet(N.map(n=>({
+  id:n.id,label:n.name+(n.detail?'\n'+n.detail:''),shape:'box',
+  color:{background:'#0d141d',border:PAL[n.kind]||'#888',highlight:{background:'#152233',border:PAL[n.kind]||'#888'}},
+  font:{color:PAL[n.kind]||'#cfe',size:n.big?18:14,multi:true,face:'monospace'},
+  borderWidth:n.big?3:1.5
+})));
+const edges=new vis.DataSet(E.map(e=>({
+  from:e.from,to:e.to,label:e.label||'',arrows:'to',dashes:!!e.dashes,
+  color:{color:'#2c4a5a',highlight:'#5fffcf'},
+  font:{color:'#6a8',size:10,strokeWidth:0},smooth:{type:'cubicBezier'}
+})));
+const net=new vis.Network(document.getElementById('net'),{nodes,edges},{
+  layout:{hierarchical:{enabled:true,direction:DIR,sortMethod:'directed',levelSeparation:230,nodeSpacing:115}},
+  physics:false,interaction:{hover:true}
+});
+function fitPad(){net.fit({animation:false});net.moveTo({scale:net.getScale()*0.85,animation:false});}
+net.once('afterDrawing',fitPad);net.on('resize',fitPad);
+</script></body></html>

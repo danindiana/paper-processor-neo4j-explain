@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>LIVE · paper_processor.py</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+ html,body{margin:0;height:100%;background:#06090f;color:#cfe;font-family:ui-monospace,Menlo,monospace}
+ #hdr{padding:10px 16px;border-bottom:1px solid #163;background:#0a1018;display:flex;justify-content:space-between;align-items:center}
+ #hdr h1{margin:0;font-size:16px;color:#5fffcf;letter-spacing:.5px}
+ #hdr p{margin:4px 0 0;font-size:12px;color:#7aa}
+ #stamp{font-size:12px;text-align:right}
+ #dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#9affae;margin-left:6px;box-shadow:0 0 8px #9affae}
+ #dot.dead{background:#ff6b6b;box-shadow:0 0 8px #ff6b6b}
+ #net{width:100%;height:calc(100vh - 66px)}
+</style></head><body>
+<div id="hdr">
+  <div><h1>🦞 LIVE · paper_processor.py</h1><p id="sub">connecting…</p></div>
+  <div id="stamp">refreshed <span id="ago">—</span><span id="dot"></span><br>
+       <span style="color:#567">auto-refresh 15s · source: pp_explain_live.json</span></div>
+</div>
+<div id="net"></div>
+<script>
+const PAL={source:'#9affae',probe:'#ffd45f',pipe:'#5fffcf',store:'#7ab8ff',
+  data:'#ff7ad9',web:'#ffa45f',client:'#ff6b6b',backend:'#c0a0ff',model:'#ff7ad9',section:'#ffa45f'};
+const REFRESH=15000;
+const nodes=new vis.DataSet([]), edges=new vis.DataSet([]);
+const net=new vis.Network(document.getElementById('net'),{nodes,edges},{
+  layout:{hierarchical:{enabled:true,direction:'LR',sortMethod:'directed',levelSeparation:240,nodeSpacing:120}},
+  physics:false,interaction:{hover:true}});
+function fitPad(){net.fit({animation:false});net.moveTo({scale:net.getScale()*0.85,animation:false});}
+net.on('resize',fitPad);
+
+let lastGen=0;
+function toNode(n){return {id:n.id,label:n.name+(n.detail?'\n'+n.detail:''),shape:'box',
+  color:{background:'#0d141d',border:PAL[n.kind]||'#888',highlight:{background:'#152233',border:PAL[n.kind]||'#888'}},
+  font:{color:PAL[n.kind]||'#cfe',size:n.big?18:14,multi:true,face:'monospace'},borderWidth:n.big?3:1.5};}
+function toEdge(e,i){return {id:'e'+i,from:e.from,to:e.to,label:e.label||'',arrows:'to',
+  color:{color:'#2c4a5a',highlight:'#5fffcf'},font:{color:'#6a8',size:10,strokeWidth:0},smooth:{type:'cubicBezier'}};}
+
+async function refresh(){
+  try{
+    const g=await (await fetch('pp_explain_live.json?_='+Date.now())).json();
+    document.getElementById('sub').textContent=g.subtitle;
+    document.getElementById('dot').className=g.alive?'':'dead';
+    nodes.clear(); edges.clear();
+    nodes.add(g.nodes.map(toNode)); edges.add(g.edges.map(toEdge));
+    lastGen=g.generated_epoch*1000; fitPad();
+  }catch(err){ document.getElementById('sub').textContent='waiting for pp_explain_live.json … run gen_live_state.py'; }
+}
+setInterval(()=>{const s=Math.max(0,Math.round((Date.now()-lastGen)/1000));
+  document.getElementById('ago').textContent=lastGen?s+'s ago':'—';},1000);
+refresh(); setInterval(refresh,REFRESH);
+</script></body></html>

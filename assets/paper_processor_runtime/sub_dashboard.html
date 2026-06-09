@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Subsystem · neo4j_viz dashboard</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+ html,body{margin:0;height:100%;background:#06090f;color:#cfe;font-family:ui-monospace,Menlo,monospace}
+ #hdr{padding:10px 16px;border-bottom:1px solid #163;background:#0a1018}
+ #hdr h1{margin:0;font-size:16px;color:#5fffcf;letter-spacing:.5px}
+ #hdr p{margin:4px 0 0;font-size:12px;color:#7aa}
+ #net{width:100%;height:calc(100vh - 64px)}
+</style></head><body>
+<div id="hdr"><h1>🦞 Subsystem · neo4j_viz dashboard</h1><p>server.py on 0.0.0.0:8585 — serve assets, sync to Neo4j, export</p></div>
+<div id="net"></div>
+<script>
+const PAL={"source": "#9affae", "probe": "#ffd45f", "pipe": "#5fffcf", "store": "#7ab8ff", "data": "#ff7ad9", "web": "#ffa45f", "client": "#ff6b6b", "backend": "#c0a0ff", "stage": "#ff6b6b", "section": "#7aa0c0", "model": "#ff7ad9", "io": "#ffd45f"};
+const N=[{"id": "browser", "kind": "client", "name": "LAN browser", "detail": "index.html dashboard", "big": true}, {"id": "server", "kind": "web", "name": "server.py :8585", "detail": "ThreadingHTTPServer", "big": true}, {"id": "assets", "kind": "store", "name": "/_processed/*", "detail": "translate_path \u2192 SSD"}, {"id": "active", "kind": "io", "name": "/api/active_datasets", "detail": "scan ps for processors"}, {"id": "setds", "kind": "io", "name": "/api/set_dataset", "detail": "switch corpus root"}, {"id": "sync", "kind": "pipe", "name": "/api/sync", "detail": "spawn neo4j_importer.py"}, {"id": "export", "kind": "data", "name": "/api/export", "detail": "nodes/edges snapshot"}, {"id": "importer", "kind": "stage", "name": "neo4j_importer.py", "detail": "walk _processed/ \u2192 MERGE"}, {"id": "neo4j", "kind": "store", "name": "Neo4j", "detail": "paper-processor-neo4j\nbolt 7687 / http 7474", "big": true}];
+const E=[{"from": "browser", "to": "server", "label": "HTTP"}, {"from": "server", "to": "assets", "label": "GET"}, {"from": "server", "to": "active"}, {"from": "server", "to": "setds", "label": "POST"}, {"from": "server", "to": "sync", "label": "POST"}, {"from": "server", "to": "export", "label": "POST"}, {"from": "sync", "to": "importer", "label": "subprocess"}, {"from": "importer", "to": "neo4j", "label": "MERGE papers/sections"}, {"from": "export", "to": "neo4j", "label": "query"}];
+const DIR='LR';
+const nodes=new vis.DataSet(N.map(n=>({
+  id:n.id,label:n.name+(n.detail?'\n'+n.detail:''),shape:'box',
+  color:{background:'#0d141d',border:PAL[n.kind]||'#888',highlight:{background:'#152233',border:PAL[n.kind]||'#888'}},
+  font:{color:PAL[n.kind]||'#cfe',size:n.big?18:14,multi:true,face:'monospace'},
+  borderWidth:n.big?3:1.5
+})));
+const edges=new vis.DataSet(E.map(e=>({
+  from:e.from,to:e.to,label:e.label||'',arrows:'to',dashes:!!e.dashes,
+  color:{color:'#2c4a5a',highlight:'#5fffcf'},
+  font:{color:'#6a8',size:10,strokeWidth:0},smooth:{type:'cubicBezier'}
+})));
+const net=new vis.Network(document.getElementById('net'),{nodes,edges},{
+  layout:{hierarchical:{enabled:true,direction:DIR,sortMethod:'directed',levelSeparation:230,nodeSpacing:115}},
+  physics:false,interaction:{hover:true}
+});
+function fitPad(){net.fit({animation:false});net.moveTo({scale:net.getScale()*0.85,animation:false});}
+net.once('afterDrawing',fitPad);net.on('resize',fitPad);
+</script></body></html>

@@ -1,0 +1,90 @@
+{
+  "title": "LIVE \u00b7 paper_processor.py state",
+  "subtitle": "RUNNING \u00b7 2795/5219 (54%) \u00b7 current: putnam-and-beyond \u00b7 refreshed every 15s",
+  "generated_epoch": 1781008861,
+  "alive": true,
+  "nodes": [
+    {
+      "id": "proc",
+      "kind": "source",
+      "big": true,
+      "name": "paper_processor.py",
+      "detail": "PID 104025 \u00b7 RUNNING\nuptime 17:47:11"
+    },
+    {
+      "id": "ollama",
+      "kind": "backend",
+      "name": "Ollama",
+      "detail": "127.0.0.1:11434"
+    },
+    {
+      "id": "model",
+      "kind": "model",
+      "name": "nemotron-3-nano-30b-small:latest",
+      "detail": "31.6B \u00b7 23.8GB VRAM"
+    },
+    {
+      "id": "corpus",
+      "kind": "store",
+      "big": true,
+      "name": "AI-ML_Papers",
+      "detail": "2795/5219 processed (54%)"
+    },
+    {
+      "id": "cur",
+      "kind": "section",
+      "big": true,
+      "name": "putnam-and-beyond",
+      "detail": "last write 77m ago"
+    },
+    {
+      "id": "gpu0",
+      "kind": "backend",
+      "name": "GPU0",
+      "detail": "15633 MiB \u00b7 14% util"
+    },
+    {
+      "id": "gpu1",
+      "kind": "backend",
+      "name": "GPU1",
+      "detail": "8410 MiB \u00b7 18% util"
+    }
+  ],
+  "edges": [
+    {
+      "from": "proc",
+      "to": "ollama",
+      "label": "USES"
+    },
+    {
+      "from": "ollama",
+      "to": "model",
+      "label": "LOADS"
+    },
+    {
+      "from": "proc",
+      "to": "corpus",
+      "label": "WALKS"
+    },
+    {
+      "from": "corpus",
+      "to": "cur",
+      "label": "CURRENT"
+    },
+    {
+      "from": "proc",
+      "to": "cur",
+      "label": "PROCESSING"
+    },
+    {
+      "from": "model",
+      "to": "gpu0",
+      "label": "VRAM"
+    },
+    {
+      "from": "model",
+      "to": "gpu1",
+      "label": "VRAM"
+    }
+  ]
+}

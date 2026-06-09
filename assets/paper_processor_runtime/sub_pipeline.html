@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Subsystem · per-paper processing pipeline</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+ html,body{margin:0;height:100%;background:#06090f;color:#cfe;font-family:ui-monospace,Menlo,monospace}
+ #hdr{padding:10px 16px;border-bottom:1px solid #163;background:#0a1018}
+ #hdr h1{margin:0;font-size:16px;color:#5fffcf;letter-spacing:.5px}
+ #hdr p{margin:4px 0 0;font-size:12px;color:#7aa}
+ #net{width:100%;height:calc(100vh - 64px)}
+</style></head><body>
+<div id="hdr"><h1>🦞 Subsystem · per-paper processing pipeline</h1><p>paper_processor.py Processor.process() — one PDF → a _processed/ knowledge bundle</p></div>
+<div id="net"></div>
+<script>
+const PAL={"source": "#9affae", "probe": "#ffd45f", "pipe": "#5fffcf", "store": "#7ab8ff", "data": "#ff7ad9", "web": "#ffa45f", "client": "#ff6b6b", "backend": "#c0a0ff", "stage": "#ff6b6b", "section": "#7aa0c0", "model": "#ff7ad9", "io": "#ffd45f"};
+const N=[{"id": "pdf", "kind": "source", "name": "PDF", "detail": "papers_dir.rglob(*.pdf)", "big": true}, {"id": "skip", "kind": "io", "name": "skip?", "detail": "all sections complete\n+ no --reprocess"}, {"id": "extract", "kind": "stage", "name": "extract_pages_with_ocr", "detail": "PyMuPDF text + OCR fallback"}, {"id": "chunks", "kind": "pipe", "name": "build_chunks", "detail": "sliding window 12 / overlap 2"}, {"id": "mapreduce", "kind": "pipe", "name": "map_reduce_chunks", "detail": ">1 chunk \u2192 context"}, {"id": "model", "kind": "model", "name": "select_model", "detail": "by page_count / --model", "big": true}, {"id": "sum", "kind": "section", "name": "summary", "detail": "01_summary.md"}, {"id": "logic", "kind": "section", "name": "logic", "detail": "02_symbolic_logic.md"}, {"id": "cpp", "kind": "section", "name": "cpp", "detail": "03_cpp_examples.md\n(code_model)"}, {"id": "diag", "kind": "section", "name": "diagrams", "detail": "parse_diagrams + render_dot\n6\u00d7 DOT\u2192SVG"}, {"id": "extras", "kind": "section", "name": "extras", "detail": "04_extras.md"}, {"id": "meta", "kind": "store", "name": "metadata.json", "detail": "_save_meta \u00b7 hash \u00b7 sections_completed", "big": true}];
+const E=[{"from": "pdf", "to": "skip"}, {"from": "skip", "to": "extract", "label": "no"}, {"from": "extract", "to": "chunks"}, {"from": "chunks", "to": "mapreduce"}, {"from": "mapreduce", "to": "model", "label": "context"}, {"from": "model", "to": "sum", "label": "backend.call"}, {"from": "model", "to": "logic"}, {"from": "model", "to": "cpp"}, {"from": "model", "to": "diag"}, {"from": "model", "to": "extras"}, {"from": "sum", "to": "meta"}, {"from": "logic", "to": "meta"}, {"from": "cpp", "to": "meta"}, {"from": "diag", "to": "meta"}, {"from": "extras", "to": "meta"}];
+const DIR='LR';
+const nodes=new vis.DataSet(N.map(n=>({
+  id:n.id,label:n.name+(n.detail?'\n'+n.detail:''),shape:'box',
+  color:{background:'#0d141d',border:PAL[n.kind]||'#888',highlight:{background:'#152233',border:PAL[n.kind]||'#888'}},
+  font:{color:PAL[n.kind]||'#cfe',size:n.big?18:14,multi:true,face:'monospace'},
+  borderWidth:n.big?3:1.5
+})));
+const edges=new vis.DataSet(E.map(e=>({
+  from:e.from,to:e.to,label:e.label||'',arrows:'to',dashes:!!e.dashes,
+  color:{color:'#2c4a5a',highlight:'#5fffcf'},
+  font:{color:'#6a8',size:10,strokeWidth:0},smooth:{type:'cubicBezier'}
+})));
+const net=new vis.Network(document.getElementById('net'),{nodes,edges},{
+  layout:{hierarchical:{enabled:true,direction:DIR,sortMethod:'directed',levelSeparation:230,nodeSpacing:115}},
+  physics:false,interaction:{hover:true}
+});
+function fitPad(){net.fit({animation:false});net.moveTo({scale:net.getScale()*0.85,animation:false});}
+net.once('afterDrawing',fitPad);net.on('resize',fitPad);
+</script></body></html>
