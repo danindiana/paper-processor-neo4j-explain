@@ -137,6 +137,36 @@ SPECS = {
      {"from":"evict","to":"api","dashes":True},{"from":"restart","to":"api","dashes":True},
    ],
  },
+ # ── 5 · --workers parallelism (main loop ThreadPoolExecutor) ──
+ "sub_workers": {
+   "title": "Subsystem · --workers parallelism",
+   "subtitle": "main(): ThreadPoolExecutor(max_workers=N) over pdfs — default 1 (VRAM-bound)",
+   "direction": "LR",
+   "nodes": [
+     {"id":"pdfs","kind":"source","name":"pdfs[]","detail":"rglob(*.pdf)\nminus _processed","big":True},
+     {"id":"pool","kind":"pipe","name":"ThreadPoolExecutor","detail":"max_workers=N · default 1","big":True},
+     {"id":"submit","kind":"io","name":"pool.submit","detail":"processor.process per PDF"},
+     {"id":"wait","kind":"io","name":"wait(FIRST_COMPLETED)","detail":"timeout 2.0s loop"},
+     {"id":"w1","kind":"stage","name":"worker 1","detail":"process(pdf)"},
+     {"id":"w2","kind":"stage","name":"worker 2 … N","detail":"⚠ shared GPU VRAM"},
+     {"id":"ollama","kind":"backend","name":"Ollama","detail":"NUM_PARALLEL=1\n→ requests queue","big":True},
+     {"id":"shutdown","kind":"client","name":"_shutdown Event","detail":"SIGINT → cancel pending"},
+     {"id":"timeout","kind":"client","name":"timeout?","detail":"_ollama_restart_service"},
+     {"id":"sync","kind":"data","name":"_periodic_sync_worker","detail":"daemon · Neo4j every 300s"},
+     {"id":"errors","kind":"store","name":"errors[]","detail":"per-paper failures"},
+   ],
+   "edges": [
+     {"from":"pdfs","to":"pool"},
+     {"from":"pool","to":"submit"},{"from":"submit","to":"wait","label":"futures"},
+     {"from":"submit","to":"w1"},{"from":"submit","to":"w2"},
+     {"from":"w1","to":"ollama"},{"from":"w2","to":"ollama","label":"contend"},
+     {"from":"wait","to":"errors","label":"fut.result()"},
+     {"from":"errors","to":"timeout","label":"'timed out'"},
+     {"from":"timeout","to":"ollama","label":"restart","dashes":True},
+     {"from":"shutdown","to":"wait","label":"cancel","dashes":True},
+     {"from":"pool","to":"sync","label":"parallel daemon","dashes":True},
+   ],
+ },
  # ── 4 · neo4j_viz dashboard (server.py + importer + compose) ──
  "sub_dashboard": {
    "title": "Subsystem · neo4j_viz dashboard",

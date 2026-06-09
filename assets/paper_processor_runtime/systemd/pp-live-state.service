@@ -1,0 +1,18 @@
+[Unit]
+Description=Refresh paper_processor.py live :PPLive state (JSON + Neo4j)
+Documentation=https://github.com/danindiana/paper-processor-neo4j-explain
+After=network.target
+
+[Service]
+Type=oneshot
+User=jeb
+# Adjust WorkingDirectory if you cloned the repo elsewhere.
+WorkingDirectory=/home/jeb/programs/python_programs/paper-processor-neo4j-explain/assets/paper_processor_runtime
+Environment=NEO4J_URL=http://127.0.0.1:7474
+Environment=NEO4J_USER=neo4j
+Environment=NEO4J_PASS=password123
+ExecStart=/usr/bin/python3 gen_live_state.py --neo4j
+Nice=10
+
+[Install]
+WantedBy=multi-user.target

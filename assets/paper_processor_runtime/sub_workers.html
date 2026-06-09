@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Subsystem · --workers parallelism</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+ html,body{margin:0;height:100%;background:#06090f;color:#cfe;font-family:ui-monospace,Menlo,monospace}
+ #hdr{padding:10px 16px;border-bottom:1px solid #163;background:#0a1018}
+ #hdr h1{margin:0;font-size:16px;color:#5fffcf;letter-spacing:.5px}
+ #hdr p{margin:4px 0 0;font-size:12px;color:#7aa}
+ #net{width:100%;height:calc(100vh - 64px)}
+</style></head><body>
+<div id="hdr"><h1>🦞 Subsystem · --workers parallelism</h1><p>main(): ThreadPoolExecutor(max_workers=N) over pdfs — default 1 (VRAM-bound)</p></div>
+<div id="net"></div>
+<script>
+const PAL={"source": "#9affae", "probe": "#ffd45f", "pipe": "#5fffcf", "store": "#7ab8ff", "data": "#ff7ad9", "web": "#ffa45f", "client": "#ff6b6b", "backend": "#c0a0ff", "stage": "#ff6b6b", "section": "#7aa0c0", "model": "#ff7ad9", "io": "#ffd45f"};
+const N=[{"id": "pdfs", "kind": "source", "name": "pdfs[]", "detail": "rglob(*.pdf)\nminus _processed", "big": true}, {"id": "pool", "kind": "pipe", "name": "ThreadPoolExecutor", "detail": "max_workers=N \u00b7 default 1", "big": true}, {"id": "submit", "kind": "io", "name": "pool.submit", "detail": "processor.process per PDF"}, {"id": "wait", "kind": "io", "name": "wait(FIRST_COMPLETED)", "detail": "timeout 2.0s loop"}, {"id": "w1", "kind": "stage", "name": "worker 1", "detail": "process(pdf)"}, {"id": "w2", "kind": "stage", "name": "worker 2 \u2026 N", "detail": "\u26a0 shared GPU VRAM"}, {"id": "ollama", "kind": "backend", "name": "Ollama", "detail": "NUM_PARALLEL=1\n\u2192 requests queue", "big": true}, {"id": "shutdown", "kind": "client", "name": "_shutdown Event", "detail": "SIGINT \u2192 cancel pending"}, {"id": "timeout", "kind": "client", "name": "timeout?", "detail": "_ollama_restart_service"}, {"id": "sync", "kind": "data", "name": "_periodic_sync_worker", "detail": "daemon \u00b7 Neo4j every 300s"}, {"id": "errors", "kind": "store", "name": "errors[]", "detail": "per-paper failures"}];
+const E=[{"from": "pdfs", "to": "pool"}, {"from": "pool", "to": "submit"}, {"from": "submit", "to": "wait", "label": "futures"}, {"from": "submit", "to": "w1"}, {"from": "submit", "to": "w2"}, {"from": "w1", "to": "ollama"}, {"from": "w2", "to": "ollama", "label": "contend"}, {"from": "wait", "to": "errors", "label": "fut.result()"}, {"from": "errors", "to": "timeout", "label": "'timed out'"}, {"from": "timeout", "to": "ollama", "label": "restart", "dashes": true}, {"from": "shutdown", "to": "wait", "label": "cancel", "dashes": true}, {"from": "pool", "to": "sync", "label": "parallel daemon", "dashes": true}];
+const DIR='LR';
+const nodes=new vis.DataSet(N.map(n=>({
+  id:n.id,label:n.name+(n.detail?'\n'+n.detail:''),shape:'box',
+  color:{background:'#0d141d',border:PAL[n.kind]||'#888',highlight:{background:'#152233',border:PAL[n.kind]||'#888'}},
+  font:{color:PAL[n.kind]||'#cfe',size:n.big?18:14,multi:true,face:'monospace'},
+  borderWidth:n.big?3:1.5
+})));
+const edges=new vis.DataSet(E.map(e=>({
+  from:e.from,to:e.to,label:e.label||'',arrows:'to',dashes:!!e.dashes,
+  color:{color:'#2c4a5a',highlight:'#5fffcf'},
+  font:{color:'#6a8',size:10,strokeWidth:0},smooth:{type:'cubicBezier'}
+})));
+const net=new vis.Network(document.getElementById('net'),{nodes,edges},{
+  layout:{hierarchical:{enabled:true,direction:DIR,sortMethod:'directed',levelSeparation:230,nodeSpacing:115}},
+  physics:false,interaction:{hover:true}
+});
+function fitPad(){net.fit({animation:false});net.moveTo({scale:net.getScale()*0.85,animation:false});}
+net.once('afterDrawing',fitPad);net.on('resize',fitPad);
+</script></body></html>

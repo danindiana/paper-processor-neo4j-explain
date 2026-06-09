@@ -1,0 +1,13 @@
+[Unit]
+Description=Run pp-live-state.service every 15s to keep the live dashboard fresh
+Documentation=https://github.com/danindiana/paper-processor-neo4j-explain
+
+[Timer]
+# First run 20s after boot, then every 15s while the system is up.
+OnBootSec=20s
+OnUnitActiveSec=15s
+AccuracySec=2s
+Unit=pp-live-state.service
+
+[Install]
+WantedBy=timers.target

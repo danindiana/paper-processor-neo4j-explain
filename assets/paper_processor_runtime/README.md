@@ -99,12 +99,58 @@ from the snapshot source, so they match the code in this folder.
 
 ![neo4j_viz dashboard](sub_dashboard.png)
 
+### `--workers` parallelism — `main()`
+> `ThreadPoolExecutor(max_workers=N)` over the PDF list (default 1 — VRAM-bound, since
+> Ollama runs `NUM_PARALLEL=1` so concurrent workers contend and queue). Includes the
+> `wait(FIRST_COMPLETED)` loop, `_shutdown` cancellation, timeout→restart recovery, and
+> the daemon `_periodic_sync_worker` (Neo4j every 300 s).
+
+![--workers parallelism](sub_workers.png)
+
+---
+
+## 🗂️ Corpus-category treemap
+
+[`gen_treemap.py`](gen_treemap.py) scans `_processed/*/metadata.json` and draws a
+**squarified treemap** (tile area ∝ processed-paper count) straight to SVG — no browser.
+`agents` (433) dwarfs the field, followed by `rag`, `moe`, `attention_mechanisms`,
+`code-complete`, `bci`, … across 370 categories.
+
+```bash
+python3 gen_treemap.py --top 45
+rsvg-convert -b '#06090f' corpus_treemap.svg -o corpus_treemap.png
+```
+
+![Corpus-category treemap](corpus_treemap.png)
+
+---
+
+## ⏱️ Always-fresh live view (systemd timer)
+
+[`systemd/`](systemd/) ships a oneshot service + 15 s timer that re-runs
+`gen_live_state.py --neo4j`, so `pp_explain_live.json` and the Neo4j `:PPLive` graph
+stay current without a `watch` loop.
+
+```bash
+./systemd/install.sh          # installs to /etc/systemd/system, enables the timer
+systemctl list-timers pp-live-state.timer
+journalctl -u pp-live-state.service -f
+# uninstall:
+sudo systemctl disable --now pp-live-state.timer && \
+  sudo rm /etc/systemd/system/pp-live-state.{service,timer} && sudo systemctl daemon-reload
+```
+
+> Edit `WorkingDirectory` / `NEO4J_*` in `pp-live-state.service` if you cloned elsewhere
+> or use different Neo4j creds. Pair it with any static server pointed at this folder to
+> host `live.html` on the LAN.
+
 ---
 
 ## 🛠️ Regenerate everything
 
 ```bash
-python3 build_diagrams.py                  # sub_*.html
-for f in sub_pipeline sub_ocr sub_backend sub_dashboard; do ./render.sh $f.html; done
-python3 gen_live_state.py --neo4j          # refresh the live snapshot
+python3 build_diagrams.py                  # sub_*.html (incl. sub_workers)
+for f in sub_pipeline sub_ocr sub_backend sub_dashboard sub_workers; do ./render.sh $f.html; done
+python3 gen_treemap.py && rsvg-convert -b '#06090f' corpus_treemap.svg -o corpus_treemap.png
+python3 gen_live_state.py --neo4j          # or let the systemd timer do it
 ```

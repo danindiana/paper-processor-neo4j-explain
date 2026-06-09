@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" font-family="ui-monospace,Menlo,monospace">
+<rect width="1600" height="900" fill="#06090f"/>
+<text x="20" y="34" fill="#5fffcf" font-size="22" font-weight="700">🦞 AI-ML_Papers corpus — 46 categories · 2795 processed papers</text>
+<text x="20" y="60" fill="#7aa" font-size="13">tile area ∝ processed-paper count · top categories labelled · generated from _processed/*/metadata.json</text>
+<line x1="0" y1="88" x2="1600" y2="88" stroke="#163"/>
+<rect x="0.0" y="96.0" width="348.9" height="565.9" rx="4" fill="#0d141d" stroke="#5fffcf" stroke-width="1.5"/>
+<text x="7.0" y="114.0" fill="#5fffcf" font-size="13">agents</text>
+<text x="7.0" y="130.0" fill="#9ab" font-size="11">433</text>
+<rect x="0.0" y="663.9" width="348.9" height="234.1" rx="4" fill="#0d141d" stroke="#7ab8ff" stroke-width="1.5"/>
+<text x="7.0" y="681.9" fill="#7ab8ff" font-size="13">rag</text>
+<text x="7.0" y="697.9" fill="#9ab" font-size="11">180</text>
+<rect x="350.9" y="96.0" width="236.1" height="295.6" rx="4" fill="#0d141d" stroke="#ff7ad9" stroke-width="1.5"/>
+<text x="357.9" y="114.0" fill="#ff7ad9" font-size="13">moe</text>
+<text x="357.9" y="130.0" fill="#9ab" font-size="11">154</text>
+<rect x="350.9" y="393.6" width="236.1" height="293.7" rx="4" fill="#0d141d" stroke="#ffd45f" stroke-width="1.5"/>
+<text x="357.9" y="411.6" fill="#ffd45f" font-size="13">attention_mechanisms</text>
+<text x="357.9" y="427.6" fill="#9ab" font-size="11">153</text>
+<rect x="350.9" y="689.3" width="236.1" height="208.7" rx="4" fill="#0d141d" stroke="#9affae" stroke-width="1.5"/>
+<text x="357.9" y="707.3" fill="#9affae" font-size="13">code-complete</text>
+<text x="357.9" y="723.3" fill="#9ab" font-size="11">109</text>
+<rect x="589.1" y="96.0" width="172.6" height="253.7" rx="4" fill="#0d141d" stroke="#ffa45f" stroke-width="1.5"/>
+<text x="596.1" y="114.0" fill="#ffa45f" font-size="13">bci</text>
+<text x="596.1" y="130.0" fill="#9ab" font-size="11">97</text>
+<rect x="589.1" y="351.7" width="172.6" height="195.7" rx="4" fill="#0d141d" stroke="#c0a0ff" stroke-width="1.5"/>
+<text x="596.1" y="369.7" fill="#c0a0ff" font-size="13">inference</text>
+<text x="596.1" y="385.7" fill="#9ab" font-size="11">75</text>
+<rect x="589.1" y="549.4" width="172.6" height="182.5" rx="4" fill="#0d141d" stroke="#ff6b6b" stroke-width="1.5"/>
+<text x="596.1" y="567.4" fill="#ff6b6b" font-size="13">agi</text>
+<text x="596.1" y="583.4" fill="#9ab" font-size="11">70</text>
+<rect x="589.1" y="733.9" width="172.6" height="164.1" rx="4" fill="#0d141d" stroke="#7aa0c0" stroke-width="1.5"/>
+<text x="596.1" y="751.9" fill="#7aa0c0" font-size="13">brain_inspired</text>
+<text x="596.1" y="767.9" fill="#9ab" font-size="11">63</text>
+<rect x="763.6" y="96.0" width="151.4" height="184.0" rx="4" fill="#0d141d" stroke="#5fd0ff" stroke-width="1.5"/>
+<text x="770.6" y="114.0" fill="#5fd0ff" font-size="13">monte-carlo</text>
+<text x="770.6" y="130.0" fill="#9ab" font-size="11">62</text>
+<rect x="763.6" y="282.0" width="151.4" height="175.0" rx="4" fill="#0d141d" stroke="#5fffcf" stroke-width="1.5"/>
+<text x="770.6" y="300.0" fill="#5fffcf" font-size="13">gpu</text>
+<text x="770.6" y="316.0" fill="#9ab" font-size="11">59</text>
+<rect x="763.6" y="459.0" width="151.4" height="151.0" rx="4" fill="#0d141d" stroke="#7ab8ff" stroke-width="1.5"/>
+<text x="770.6" y="477.0" fill="#7ab8ff" font-size="13">biological_systems</text>
+<text x="770.6" y="493.0" fill="#9ab" font-size="11">51</text>
+<rect x="763.6" y="612.0" width="151.4" height="151.0" rx="4" fill="#0d141d" stroke="#ff7ad9" stroke-width="1.5"/>
+<text x="770.6" y="630.0" fill="#ff7ad9" font-size="13">ocr</text>
+<text x="770.6" y="646.0" fill="#9ab" font-size="11">51</text>
+<rect x="763.6" y="765.0" width="151.4" height="133.0" rx="4" fill="#0d141d" stroke="#ffd45f" stroke-width="1.5"/>
+<text x="770.6" y="783.0" fill="#ffd45f" font-size="13">diffuions_models</text>
+<text x="770.6" y="799.0" fill="#9ab" font-size="11">45</text>
+<rect x="917.1" y="96.0" width="136.4" height="147.6" rx="4" fill="#0d141d" stroke="#9affae" stroke-width="1.5"/>
+<text x="924.1" y="114.0" fill="#9affae" font-size="13">ebf</text>
+<text x="924.1" y="130.0" fill="#9ab" font-size="11">45</text>
+<rect x="1055.5" y="96.0" width="136.4" height="147.6" rx="4" fill="#0d141d" stroke="#ffa45f" stroke-width="1.5"/>
+<text x="1062.5" y="114.0" fill="#ffa45f" font-size="13">fact-checking</text>
+<text x="1062.5" y="130.0" fill="#9ab" font-size="11">45</text>
+<rect x="1193.9" y="96.0" width="133.4" height="147.6" rx="4" fill="#0d141d" stroke="#c0a0ff" stroke-width="1.5"/>
+<text x="1200.9" y="114.0" fill="#c0a0ff" font-size="13">curiosity</text>
+<text x="1200.9" y="130.0" fill="#9ab" font-size="11">44</text>
+<rect x="1329.3" y="96.0" width="133.4" height="147.6" rx="4" fill="#0d141d" stroke="#ff6b6b" stroke-width="1.5"/>
+<text x="1336.3" y="114.0" fill="#ff6b6b" font-size="13">human_brain</text>
+<text x="1336.3" y="130.0" fill="#9ab" font-size="11">44</text>
+<rect x="1464.6" y="96.0" width="133.4" height="147.6" rx="4" fill="#0d141d" stroke="#7aa0c0" stroke-width="1.5"/>
+<text x="1471.6" y="114.0" fill="#7aa0c0" font-size="13">lstm</text>
+<text x="1471.6" y="130.0" fill="#9ab" font-size="11">44</text>
+<rect x="917.1" y="245.6" width="123.9" height="155.2" rx="4" fill="#0d141d" stroke="#5fd0ff" stroke-width="1.5"/>
+<text x="924.1" y="263.6" fill="#5fd0ff" font-size="11">info_theory</text>
+<text x="924.1" y="279.6" fill="#9ab" font-size="11">43</text>
+<rect x="917.1" y="402.8" width="123.9" height="136.9" rx="4" fill="#0d141d" stroke="#5fffcf" stroke-width="1.5"/>
+<text x="924.1" y="420.8" fill="#5fffcf" font-size="11">graphs</text>
+<text x="924.1" y="436.8" fill="#9ab" font-size="11">38</text>
+<rect x="917.1" y="541.7" width="123.9" height="122.3" rx="4" fill="#0d141d" stroke="#7ab8ff" stroke-width="1.5"/>
+<text x="924.1" y="559.7" fill="#7ab8ff" font-size="11">architectures</text>
+<text x="924.1" y="575.7" fill="#9ab" font-size="11">34</text>
+<rect x="917.1" y="666.0" width="123.9" height="122.3" rx="4" fill="#0d141d" stroke="#ff7ad9" stroke-width="1.5"/>
+<text x="924.1" y="684.0" fill="#ff7ad9" font-size="11">nlp</text>
+<text x="924.1" y="700.0" fill="#9ab" font-size="11">34</text>
+<rect x="917.1" y="790.3" width="123.9" height="107.7" rx="4" fill="#0d141d" stroke="#ffd45f" stroke-width="1.5"/>
+<text x="924.1" y="808.3" fill="#ffd45f" font-size="11">entropy</text>
+<text x="924.1" y="824.3" fill="#9ab" font-size="11">30</text>
+<rect x="1043.0" y="245.6" width="125.2" height="102.9" rx="4" fill="#0d141d" stroke="#9affae" stroke-width="1.5"/>
+<text x="1050.0" y="263.6" fill="#9affae" font-size="11">belief_state_transformers</text>
+<text x="1050.0" y="279.6" fill="#9ab" font-size="11">29</text>
+<rect x="1170.2" y="245.6" width="116.4" height="102.9" rx="4" fill="#0d141d" stroke="#ffa45f" stroke-width="1.5"/>
+<text x="1177.2" y="263.6" fill="#ffa45f" font-size="11">algorithms</text>
+<text x="1177.2" y="279.6" fill="#9ab" font-size="11">27</text>
+<rect x="1288.6" y="245.6" width="107.7" height="102.9" rx="4" fill="#0d141d" stroke="#c0a0ff" stroke-width="1.5"/>
+<text x="1295.6" y="263.6" fill="#c0a0ff" font-size="11">qdmiro</text>
+<text x="1295.6" y="279.6" fill="#9ab" font-size="11">25</text>
+<rect x="1398.2" y="245.6" width="103.3" height="102.9" rx="4" fill="#0d141d" stroke="#ff6b6b" stroke-width="1.5"/>
+<text x="1405.2" y="263.6" fill="#ff6b6b" font-size="11">mcp</text>
+<text x="1405.2" y="279.6" fill="#9ab" font-size="11">24</text>
+<rect x="1503.5" y="245.6" width="94.5" height="102.9" rx="4" fill="#0d141d" stroke="#7aa0c0" stroke-width="1.5"/>
+<text x="1510.5" y="263.6" fill="#7aa0c0" font-size="11">hebbian-plasticity</text>
+<text x="1510.5" y="279.6" fill="#9ab" font-size="11">22</text>
+<rect x="1043.0" y="350.5" width="85.1" height="98.4" rx="4" fill="#0d141d" stroke="#5fd0ff" stroke-width="1.5"/>
+<text x="1050.0" y="368.5" fill="#5fd0ff" font-size="11">bert</text>
+<text x="1050.0" y="384.5" fill="#9ab" font-size="11">19</text>
+<rect x="1043.0" y="450.9" width="85.1" height="93.1" rx="4" fill="#0d141d" stroke="#5fffcf" stroke-width="1.5"/>
+<text x="1050.0" y="468.9" fill="#5fffcf" font-size="11">deep_learning</text>
+<text x="1050.0" y="484.9" fill="#9ab" font-size="11">18</text>
+<rect x="1043.0" y="546.0" width="85.1" height="93.1" rx="4" fill="#0d141d" stroke="#7ab8ff" stroke-width="1.5"/>
+<text x="1050.0" y="564.0" fill="#7ab8ff" font-size="11">evolution</text>
+<text x="1050.0" y="580.0" fill="#9ab" font-size="11">18</text>
+<rect x="1043.0" y="641.1" width="85.1" height="93.1" rx="4" fill="#0d141d" stroke="#ff7ad9" stroke-width="1.5"/>
+<text x="1050.0" y="659.1" fill="#ff7ad9" font-size="11">gryphgen</text>
+<text x="1050.0" y="675.1" fill="#9ab" font-size="11">18</text>
+<rect x="1043.0" y="736.2" width="85.1" height="82.5" rx="4" fill="#0d141d" stroke="#ffd45f" stroke-width="1.5"/>
+<text x="1050.0" y="754.2" fill="#ffd45f" font-size="11">fractals</text>
+<text x="1050.0" y="770.2" fill="#9ab" font-size="11">16</text>
+<rect x="1043.0" y="820.8" width="85.1" height="77.2" rx="4" fill="#0d141d" stroke="#9affae" stroke-width="1.5"/>
+<text x="1050.0" y="838.8" fill="#9affae" font-size="11">creatures</text>
+<text x="1050.0" y="854.8" fill="#9ab" font-size="11">15</text>
+<rect x="1130.1" y="350.5" width="95.9" height="68.5" rx="4" fill="#0d141d" stroke="#ffa45f" stroke-width="1.5"/>
+<text x="1137.1" y="368.5" fill="#ffa45f" font-size="11">dendrites</text>
+<text x="1137.1" y="384.5" fill="#9ab" font-size="11">15</text>
+<rect x="1228.0" y="350.5" width="82.8" height="68.5" rx="4" fill="#0d141d" stroke="#c0a0ff" stroke-width="1.5"/>
+<text x="1235.0" y="368.5" fill="#c0a0ff" font-size="11">hedt-station</text>
+<text x="1235.0" y="384.5" fill="#9ab" font-size="11">13</text>
+<rect x="1312.8" y="350.5" width="76.3" height="68.5" rx="4" fill="#0d141d" stroke="#ff6b6b" stroke-width="1.5"/>
+<text x="1319.8" y="368.5" fill="#ff6b6b" font-size="11">context</text>
+<text x="1319.8" y="384.5" fill="#9ab" font-size="11">12</text>
+<rect x="1391.1" y="350.5" width="69.8" height="68.5" rx="4" fill="#0d141d" stroke="#7aa0c0" stroke-width="1.5"/>
+<text x="1398.1" y="368.5" fill="#7aa0c0" font-size="11">ellipsis</text>
+<text x="1398.1" y="384.5" fill="#9ab" font-size="11">11</text>
+<rect x="1462.9" y="350.5" width="69.8" height="68.5" rx="4" fill="#0d141d" stroke="#5fd0ff" stroke-width="1.5"/>
+<text x="1469.9" y="368.5" fill="#5fd0ff" font-size="11">ethics</text>
+<text x="1469.9" y="384.5" fill="#9ab" font-size="11">11</text>
+<rect x="1534.7" y="350.5" width="63.3" height="68.5" rx="4" fill="#0d141d" stroke="#5fffcf" stroke-width="1.5"/>
+<text x="1541.7" y="368.5" fill="#5fffcf" font-size="11">electronics</text>
+<text x="1541.7" y="384.5" fill="#9ab" font-size="11">10</text>
+<rect x="1130.1" y="421.1" width="121.7" height="35.2" rx="4" fill="#0d141d" stroke="#7ab8ff" stroke-width="1.5"/>
+<text x="1137.1" y="439.1" fill="#7ab8ff" font-size="11">electronics_circuits</text>
+<rect x="1253.7" y="421.1" width="121.7" height="35.2" rx="4" fill="#0d141d" stroke="#ff7ad9" stroke-width="1.5"/>
+<text x="1260.7" y="439.1" fill="#ff7ad9" font-size="11">rnn</text>
+<rect x="1377.4" y="421.1" width="109.3" height="35.2" rx="4" fill="#0d141d" stroke="#ffd45f" stroke-width="1.5"/>
+<text x="1384.4" y="439.1" fill="#ffd45f" font-size="11">gradient_descent</text>
+<rect x="1488.7" y="421.1" width="109.3" height="35.2" rx="4" fill="#0d141d" stroke="#9affae" stroke-width="1.5"/>
+<text x="1495.7" y="439.1" fill="#9affae" font-size="11">pim</text>
+<rect x="1130.1" y="458.3" width="467.9" height="439.7" rx="4" fill="#0d141d" stroke="#ffa45f" stroke-width="1.5"/>
+<text x="1137.1" y="476.3" fill="#ffa45f" font-size="13">other (325 cats)</text>
+<text x="1137.1" y="492.3" fill="#9ab" font-size="11">451</text>
+</svg>
