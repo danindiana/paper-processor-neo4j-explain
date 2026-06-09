@@ -9,6 +9,7 @@
 [![Neo4j](https://img.shields.io/badge/Neo4j-graph-4581C3?logo=neo4j&logoColor=white)](https://neo4j.com)
 [![vis-network](https://img.shields.io/badge/vis--network-viz-5fffcf)](https://visjs.github.io/vis-network/)
 [![Ollama](https://img.shields.io/badge/Ollama-local%20LLM-black?logo=ollama&logoColor=white)](https://ollama.com)
+[![nvidia-smi](https://img.shields.io/badge/nvidia--smi-GPU%20telemetry-76B900?logo=nvidia&logoColor=white)](https://developer.nvidia.com/nvidia-system-management-interface)
 [![Python](https://img.shields.io/badge/python-3.8%2B-3776AB?logo=python&logoColor=white)](https://www.python.org)
 [![HTML5](https://img.shields.io/badge/HTML5-canvas-E34F26?logo=html5&logoColor=white)](web/explanation.html)
 [![Docker](https://img.shields.io/badge/Docker-neo4j-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/_/neo4j)
