@@ -1,0 +1,180 @@
+{
+  "nodes": [
+    {
+      "id": "proc",
+      "kind": "process",
+      "name": "paper_processor.py",
+      "detail": "PID 104025 \u00b7 ~17h uptime \u00b7 TTY pts/6"
+    },
+    {
+      "id": "ollama",
+      "kind": "backend",
+      "name": "Ollama",
+      "detail": "127.0.0.1:11434"
+    },
+    {
+      "id": "model",
+      "kind": "model",
+      "name": "nemotron-3-nano-30b-small",
+      "detail": "31.6B MoE \u00b7 Q4_K_M \u00b7 ~23.8GB VRAM"
+    },
+    {
+      "id": "corpus",
+      "kind": "corpus",
+      "name": "AI-ML_Papers",
+      "detail": "5219 PDFs \u00b7 ~2501 processed (~48%)"
+    },
+    {
+      "id": "done",
+      "kind": "paper",
+      "name": "projstatus_tuan",
+      "detail": "COMPLETED 06:23 \u00b7 info_theory"
+    },
+    {
+      "id": "cur",
+      "kind": "paper",
+      "name": "putnam-and-beyond",
+      "detail": "IN PROGRESS \u00b7 ~333pg \u00b7 OCR + LLM gen"
+    },
+    {
+      "id": "out",
+      "kind": "output",
+      "name": "_processed/ bundle",
+      "detail": "per-paper knowledge bundle"
+    },
+    {
+      "id": "s1",
+      "kind": "section",
+      "name": "01_summary.md",
+      "detail": ""
+    },
+    {
+      "id": "s2",
+      "kind": "section",
+      "name": "02_symbolic_logic.md",
+      "detail": ""
+    },
+    {
+      "id": "s3",
+      "kind": "section",
+      "name": "03_cpp_examples.md",
+      "detail": ""
+    },
+    {
+      "id": "s4",
+      "kind": "section",
+      "name": "diagrams/ (6+ DOT+SVG)",
+      "detail": ""
+    },
+    {
+      "id": "s5",
+      "kind": "section",
+      "name": "04_extras.md",
+      "detail": ""
+    },
+    {
+      "id": "s6",
+      "kind": "section",
+      "name": "metadata.json",
+      "detail": ""
+    },
+    {
+      "id": "ocr",
+      "kind": "stage",
+      "name": "OCR fallback",
+      "detail": "scanned/image PDFs \u2192 .ocr_cache"
+    }
+  ],
+  "edges": [
+    {
+      "from": "proc",
+      "label": "USES",
+      "to": "ollama"
+    },
+    {
+      "from": "proc",
+      "label": "COMPLETED",
+      "to": "done"
+    },
+    {
+      "from": "proc",
+      "label": "WALKS",
+      "to": "corpus"
+    },
+    {
+      "from": "proc",
+      "label": "PROCESSING",
+      "to": "cur"
+    },
+    {
+      "from": "ollama",
+      "label": "LOADS",
+      "to": "model"
+    },
+    {
+      "from": "model",
+      "label": "GENERATES",
+      "to": "out"
+    },
+    {
+      "from": "corpus",
+      "label": "CONTAINS",
+      "to": "cur"
+    },
+    {
+      "from": "corpus",
+      "label": "CONTAINS",
+      "to": "done"
+    },
+    {
+      "from": "done",
+      "label": "PRODUCES",
+      "to": "out"
+    },
+    {
+      "from": "cur",
+      "label": "NEEDS",
+      "to": "ocr"
+    },
+    {
+      "from": "cur",
+      "label": "PRODUCES",
+      "to": "out"
+    },
+    {
+      "from": "out",
+      "label": "HAS",
+      "to": "s6"
+    },
+    {
+      "from": "out",
+      "label": "HAS",
+      "to": "s2"
+    },
+    {
+      "from": "out",
+      "label": "HAS",
+      "to": "s1"
+    },
+    {
+      "from": "out",
+      "label": "HAS",
+      "to": "s4"
+    },
+    {
+      "from": "out",
+      "label": "HAS",
+      "to": "s5"
+    },
+    {
+      "from": "out",
+      "label": "HAS",
+      "to": "s3"
+    },
+    {
+      "from": "ocr",
+      "label": "FEEDS",
+      "to": "model"
+    }
+  ]
+}

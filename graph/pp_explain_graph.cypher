@@ -1,0 +1,37 @@
+// Explanation graph for the running paper_processor.py instance
+// Label :PPExplain — isolated from the lobster paper graph.
+MATCH (n:PPExplain) DETACH DELETE n;
+
+CREATE (proc:PPExplain {id:'proc', kind:'process', name:'paper_processor.py', detail:'PID 104025 · ~17h uptime · TTY pts/6'})
+CREATE (ollama:PPExplain {id:'ollama', kind:'backend', name:'Ollama', detail:'127.0.0.1:11434'})
+CREATE (model:PPExplain {id:'model', kind:'model', name:'nemotron-3-nano-30b-small', detail:'31.6B MoE · Q4_K_M · ~23.8GB VRAM'})
+CREATE (corpus:PPExplain {id:'corpus', kind:'corpus', name:'AI-ML_Papers', detail:'5219 PDFs · ~2501 processed (~48%)'})
+CREATE (done:PPExplain {id:'done', kind:'paper', name:'projstatus_tuan', detail:'COMPLETED 06:23 · info_theory'})
+CREATE (cur:PPExplain {id:'cur', kind:'paper', name:'putnam-and-beyond', detail:'IN PROGRESS · ~333pg · OCR + LLM gen'})
+CREATE (out:PPExplain {id:'out', kind:'output', name:'_processed/ bundle', detail:'per-paper knowledge bundle'})
+CREATE (s1:PPExplain {id:'s1', kind:'section', name:'01_summary.md'})
+CREATE (s2:PPExplain {id:'s2', kind:'section', name:'02_symbolic_logic.md'})
+CREATE (s3:PPExplain {id:'s3', kind:'section', name:'03_cpp_examples.md'})
+CREATE (s4:PPExplain {id:'s4', kind:'section', name:'diagrams/ (6+ DOT+SVG)'})
+CREATE (s5:PPExplain {id:'s5', kind:'section', name:'04_extras.md'})
+CREATE (s6:PPExplain {id:'s6', kind:'section', name:'metadata.json'})
+CREATE (ocr:PPExplain {id:'ocr', kind:'stage', name:'OCR fallback', detail:'scanned/image PDFs → .ocr_cache'})
+
+CREATE (proc)-[:USES]->(ollama)
+CREATE (ollama)-[:LOADS]->(model)
+CREATE (proc)-[:WALKS]->(corpus)
+CREATE (corpus)-[:CONTAINS]->(done)
+CREATE (corpus)-[:CONTAINS]->(cur)
+CREATE (proc)-[:COMPLETED]->(done)
+CREATE (proc)-[:PROCESSING]->(cur)
+CREATE (cur)-[:NEEDS]->(ocr)
+CREATE (ocr)-[:FEEDS]->(model)
+CREATE (model)-[:GENERATES]->(out)
+CREATE (cur)-[:PRODUCES]->(out)
+CREATE (done)-[:PRODUCES]->(out)
+CREATE (out)-[:HAS]->(s1)
+CREATE (out)-[:HAS]->(s2)
+CREATE (out)-[:HAS]->(s3)
+CREATE (out)-[:HAS]->(s4)
+CREATE (out)-[:HAS]->(s5)
+CREATE (out)-[:HAS]->(s6);

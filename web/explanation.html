@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>paper_processor.py — Live Explanation (Neo4j)</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+  html,body{margin:0;height:100%;background:#06090f;color:#cfe;font-family:ui-monospace,Menlo,monospace}
+  #hdr{padding:10px 16px;border-bottom:1px solid #163;background:#0a1018}
+  #hdr h1{margin:0;font-size:16px;color:#5fffcf;letter-spacing:.5px}
+  #hdr p{margin:4px 0 0;font-size:12px;color:#7aa}
+  #net{width:100%;height:calc(100vh - 64px)}
+  .pill{display:inline-block;padding:1px 7px;border-radius:9px;font-size:11px;margin-right:6px}
+</style>
+</head>
+<body>
+<div id="hdr">
+  <h1>🦞 paper_processor.py — what the running instance is doing</h1>
+  <p>PID 104025 · Ollama backend · nemotron-3-nano-30b-small · ~2501/5219 papers ·
+     currently: <b>putnam-and-beyond</b> (OCR + LLM gen) ·
+     graph from Neo4j <span class="pill" style="background:#163">:PPExplain</span></p>
+</div>
+<div id="net"></div>
+<script>
+const COLORS={process:'#5fffcf',backend:'#ffd45f',model:'#ff7ad9',corpus:'#7ab8ff',
+  paper:'#9affae',output:'#ffa45f',section:'#7aa0c0',stage:'#ff6b6b'};
+fetch('pp_explain_graph.json?_='+Date.now()).then(r=>r.json()).then(g=>{
+  const nodes=new vis.DataSet(g.nodes.map(n=>({
+    id:n.id,
+    label:n.name+(n.detail?'\n'+n.detail:''),
+    shape:'box',
+    color:{background:'#0d141d',border:COLORS[n.kind]||'#888',
+           highlight:{background:'#152233',border:COLORS[n.kind]||'#888'}},
+    font:{color:COLORS[n.kind]||'#cfe',size:n.kind==='process'?20:14,multi:true,face:'monospace'},
+    borderWidth:n.kind==='paper'||n.kind==='process'?3:1.5
+  })));
+  const edges=new vis.DataSet(g.edges.map(e=>({
+    from:e.from,to:e.to,label:e.label,arrows:'to',
+    color:{color:'#2c4a5a',highlight:'#5fffcf'},
+    font:{color:'#6a8',size:10,strokeWidth:0},smooth:{type:'cubicBezier'}
+  })));
+  new vis.Network(document.getElementById('net'),{nodes,edges},{
+    layout:{improvedLayout:true},
+    physics:{stabilization:true,barnesHut:{gravitationalConstant:-9000,springLength:160}},
+    interaction:{hover:true,tooltipDelay:120}
+  });
+});
+</script>
+</body>
+</html>
