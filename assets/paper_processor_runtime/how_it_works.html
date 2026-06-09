@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How it works — live process → :PPExplain → LAN viz</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+  html,body{margin:0;height:100%;background:#06090f;color:#cfe;font-family:ui-monospace,Menlo,monospace}
+  #hdr{padding:10px 16px;border-bottom:1px solid #163;background:#0a1018}
+  #hdr h1{margin:0;font-size:16px;color:#5fffcf;letter-spacing:.5px}
+  #hdr p{margin:4px 0 0;font-size:12px;color:#7aa}
+  #net{width:100%;height:calc(100vh - 64px)}
+  .pill{display:inline-block;padding:1px 7px;border-radius:9px;font-size:11px;background:#163;margin-right:6px}
+</style>
+</head>
+<body>
+<div id="hdr">
+  <h1>🦞 How it works — materialize a live process as a Neo4j graph, then host it on the LAN</h1>
+  <p>worlock · paper_processor.py PID 104025 → introspect → <span class="pill">:PPExplain</span> in Neo4j → vis-network → LAN browsers</p>
+</div>
+<div id="net"></div>
+<script>
+const C={source:'#9affae',probe:'#ffd45f',pipe:'#5fffcf',store:'#7ab8ff',data:'#ff7ad9',web:'#ffa45f',client:'#ff6b6b',backend:'#c0a0ff'};
+const N=[
+ {id:'proc',  kind:'source',  name:'paper_processor.py',     detail:'PID 104025 · live pipeline\nOllama + nemotron-3-nano-30b'},
+ {id:'ollama',kind:'backend', name:'Ollama',                 detail:'127.0.0.1:11434'},
+ {id:'gpu',   kind:'backend', name:'GPU0+GPU1',              detail:'RTX 5080 + RTX 3080'},
+ {id:'out',   kind:'source',  name:'_processed/ tree',       detail:'~2501/5219 bundles\nmtimes = progress signal'},
+
+ {id:'p1',kind:'probe', name:'/proc/<pid>',  detail:'cmdline · cwd · fd'},
+ {id:'p2',kind:'probe', name:'ss -tnp',      detail:'Ollama socket'},
+ {id:'p3',kind:'probe', name:'nvidia-smi',   detail:'VRAM · util'},
+ {id:'p4',kind:'probe', name:'find -newermt',detail:'current paper'},
+
+ {id:'model', kind:'pipe',  name:'1 · model state',  detail:'facts → nodes/edges'},
+ {id:'cypher',kind:'pipe',  name:'2 · pp_explain_graph.cypher', detail:'idempotent\nDETACH DELETE → CREATE'},
+ {id:'neo4j', kind:'store', name:'Neo4j :PPExplain', detail:'bolt 7687 / http 7474\npaper-processor-neo4j'},
+ {id:'json',  kind:'data',  name:'3 · export JSON',  detail:'pp_explain_graph.json'},
+ {id:'html',  kind:'web',   name:'4 · explanation.html', detail:'vis-network (single file)'},
+ {id:'serve', kind:'web',   name:'http.server 0.0.0.0:8686', detail:'UFW: LAN-only 192.168.1.0/24'},
+ {id:'lan',   kind:'client',name:'LAN browsers', detail:'http://192.168.1.85:8686'},
+];
+const E=[
+ {from:'proc',to:'ollama',label:'USES'},
+ {from:'ollama',to:'gpu',label:'RUNS ON'},
+ {from:'proc',to:'out',label:'WRITES'},
+ {from:'proc',to:'p1',label:''},
+ {from:'proc',to:'p2',label:''},
+ {from:'gpu',to:'p3',label:''},
+ {from:'out',to:'p4',label:''},
+ {from:'p1',to:'model',label:'INSPECT'},
+ {from:'p2',to:'model',label:''},
+ {from:'p3',to:'model',label:''},
+ {from:'p4',to:'model',label:''},
+ {from:'model',to:'cypher',label:'EMIT'},
+ {from:'cypher',to:'neo4j',label:'LOAD (HTTP tx)'},
+ {from:'neo4j',to:'json',label:'EXPORT'},
+ {from:'json',to:'html',label:'FETCH'},
+ {from:'html',to:'serve',label:'SERVED BY'},
+ {from:'serve',to:'lan',label:'HOSTS'},
+];
+const nodes=new vis.DataSet(N.map(n=>({
+  id:n.id,label:n.name+(n.detail?'\n'+n.detail:''),shape:'box',
+  color:{background:'#0d141d',border:C[n.kind],highlight:{background:'#152233',border:C[n.kind]}},
+  font:{color:C[n.kind],size:n.id==='neo4j'||n.id==='proc'?18:14,multi:true,face:'monospace'},
+  borderWidth:['neo4j','proc','lan'].includes(n.id)?3:1.5
+})));
+const edges=new vis.DataSet(E.map(e=>({
+  from:e.from,to:e.to,label:e.label,arrows:'to',
+  color:{color:'#2c4a5a',highlight:'#5fffcf'},
+  font:{color:'#6a8',size:10,strokeWidth:0},smooth:{type:'cubicBezier'}
+})));
+const net=new vis.Network(document.getElementById('net'),{nodes,edges},{
+  layout:{hierarchical:{enabled:true,direction:'LR',sortMethod:'directed',levelSeparation:230,nodeSpacing:110}},
+  physics:false,interaction:{hover:true}
+});
+function fitPad(){net.fit({animation:false});const s=net.getScale();net.moveTo({scale:s*0.85,animation:false});}
+net.once('afterDrawing',fitPad);
+net.on('resize',fitPad);
+</script>
+</body>
+</html>

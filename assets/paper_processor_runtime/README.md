@@ -5,6 +5,26 @@ This folder is a point-in-time snapshot (2026-06-09) of the actual files behind 
 parent repo's `:PPExplain` graph describes. Captured so the explanation graph is
 reproducible against the real source, not just a diagram.
 
+## How it works
+
+The live process is introspected, its state materialized as a small labelled Neo4j
+graph (`:PPExplain`), and rendered as an interactive vis-network page hosted on the LAN.
+The diagram below (itself a vis-network graph — see [`how_it_works.html`](how_it_works.html))
+shows the full flow:
+
+![How it works — live process → :PPExplain → LAN viz](how_it_works.png)
+
+```
+paper_processor.py (PID 104025)        ┌─ /proc/<pid>   ┐
+  ├─ USES → Ollama → GPU0+GPU1   ──────┤  ss -tnp        ├─ INSPECT ─→ ① model state
+  └─ WRITES → _processed/ tree   ──────┤  nvidia-smi     │              (facts → nodes/edges)
+                                       └─ find -newermt ─┘                     │ EMIT
+                                                                               ▼
+  LAN browsers ←─ http.server :8686 ←─ ④ explanation.html ←─ ③ export JSON ←─ Neo4j :PPExplain
+   (192.168.1.85)     (UFW LAN-only)      (vis-network)      (pp_explain.json)   ▲ LOAD
+                                                                                 └─ ② pp_explain_graph.cypher
+```
+
 ## The pipeline
 
 | File | Role |
